@@ -1,4 +1,4 @@
-# $Id$
+# $Id: Stream.pm,v 1.2 2001/11/12 14:15:13 matt Exp $
 
 package XML::SAX::PurePerl::Reader::Stream;
 

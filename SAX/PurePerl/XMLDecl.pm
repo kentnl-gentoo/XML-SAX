@@ -1,4 +1,4 @@
-# $Id$
+# $Id: XMLDecl.pm,v 1.1 2001/11/11 18:41:49 matt Exp $
 
 package XML::SAX::PurePerl;
 

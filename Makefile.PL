@@ -33,7 +33,7 @@ INSTALL
 
 sub build_xml_sax_base {
     my $code = <<'EOHEADER';
-# $Id$
+# $Id: Makefile.PL,v 1.10 2001/11/13 14:45:14 matt Exp $
 
 package XML::SAX::Base;
 
