@@ -1,11 +1,11 @@
-# $Id: SAX.pm,v 1.13 2001/11/14 11:11:03 matt Exp $
+# $Id: SAX.pm,v 1.14 2001/11/19 14:29:08 matt Exp $
 
 package XML::SAX;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 require Exporter;
 @ISA = ('Exporter');
@@ -70,7 +70,7 @@ sub _parse_ini_file {
     my @config;
     
     my $lineno = 0;
-    while (my $line = <$fh>) {
+    while (defined(my $line = <$fh>)) {
         $lineno++;
         my $original = $line;
         # strip whitespace
@@ -176,6 +176,7 @@ sub save_parsers {
         foreach my $key (keys %{$p->{Features}}) {
             print $fh "$key = $p->{Features}{$key}\n";
         }
+        print $fh "\n";
     }
 
     print $fh "\n";
