@@ -12,6 +12,7 @@ WriteMakefile(
     },    
 );
 
+use Config;
 sub MY::install {
     package MY;
     my $script = shift->SUPER::install(@_);
@@ -42,7 +43,7 @@ sub MY::install {
         $script .= <<"INSTALL";
 
 install_sax_pureperl :
-\t\@\$(PERL) -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
+\t\@\$(PERL) -I$Config{installvendorlib} -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()"
 
 INSTALL
 
