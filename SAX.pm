@@ -1,11 +1,11 @@
-# $Id: SAX.pm,v 1.17 2002/01/21 22:01:01 matt Exp $
+# $Id: SAX.pm,v 1.18 2002/01/28 19:35:09 matt Exp $
 
 package XML::SAX;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 use Exporter ();
 @ISA = ('Exporter');
@@ -46,13 +46,16 @@ http://xml.org/sax/features/validation = 1
 
 sub load_parsers {
     my $class = shift;
+    my $dir = shift;
     
     # reset parsers
     $known_parsers = [];
     
     # get directory from wherever XML::SAX is installed
-    my $dir = $INC{'XML/SAX.pm'};
-    $dir = dirname($dir);
+    if (!$dir) {
+        $dir = $INC{'XML/SAX.pm'};
+        $dir = dirname($dir);
+    }
     
     my $fh = gensym();
     if (!open($fh, File::Spec->catfile($dir, "SAX", PARSER_DETAILS))) {

@@ -1,4 +1,4 @@
-# $Id: ParserFactory.pm,v 1.8 2002/01/21 22:01:03 matt Exp $
+# $Id: ParserFactory.pm,v 1.9 2002/01/28 19:35:27 matt Exp $
 
 package XML::SAX::ParserFactory;
 
@@ -103,7 +103,12 @@ sub _parser_class {
         }
     }
 
-    return $self->{KnownParsers}[-1]{Name};
+    if (@{$self->{KnownParsers}}) {
+        return $self->{KnownParsers}[-1]{Name};
+    }
+    else {
+        return "XML::SAX::PurePerl"; # backup plan!
+    }
 }
 
 1;

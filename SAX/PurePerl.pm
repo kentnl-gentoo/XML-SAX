@@ -1,4 +1,4 @@
-# $Id: PurePerl.pm,v 1.5 2002/01/21 16:27:46 matt Exp $
+# $Id: PurePerl.pm,v 1.6 2002/01/22 21:37:41 matt Exp $
 
 package XML::SAX::PurePerl;
 
@@ -239,7 +239,8 @@ sub element {
         }
         
         delete $el->{Attributes};
-        $self->end_element($el);
+        my %end_el = %$el;
+        $self->end_element(\%end_el);
 
         for my $ns (@new_ns) {
             $self->end_prefix_mapping($ns);
