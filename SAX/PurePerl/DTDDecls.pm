@@ -1,4 +1,4 @@
-# $Id: DTDDecls.pm,v 1.1 2001/11/11 18:41:49 matt Exp $
+# $Id: DTDDecls.pm,v 1.2 2001/11/14 11:07:25 matt Exp $
 
 package XML::SAX::PurePerl;
 

@@ -1,4 +1,4 @@
-# $Id: ParserFactory.pm,v 1.6 2001/11/13 10:17:58 matt Exp $
+# $Id: ParserFactory.pm,v 1.7 2001/11/14 11:07:24 matt Exp $
 
 package XML::SAX::ParserFactory;
 

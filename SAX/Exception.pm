@@ -1,4 +1,4 @@
-# $Id: Exception.pm,v 1.2 2001/11/13 10:17:58 matt Exp $
+# $Id: Exception.pm,v 1.3 2001/11/14 11:07:24 matt Exp $
 
 package XML::SAX::Exception;
 
