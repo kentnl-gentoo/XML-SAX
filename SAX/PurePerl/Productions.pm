@@ -1,4 +1,4 @@
-# $Id: Productions.pm,v 1.9 2002/02/03 12:25:42 matt Exp $
+# $Id: Productions.pm,v 1.10 2002/02/14 16:29:34 matt Exp $
 
 package XML::SAX::PurePerl::Productions;
 
@@ -22,7 +22,7 @@ $VersionNum = qr/ [a-zA-Z0-9_.:-]+ /x;
 $EncNameStart = qr/ [A-Za-z] /x;
 $EncNameEnd = qr/ [A-Za-z0-9\._-] /x;
 
-$PubidChar = qr/ [\x20\x0D\x0Aa-zA-Z0-9'()\+,.\/:=\?;!*\#@\$_\%] /x;
+$PubidChar = qr/ [\x20\x0D\x0Aa-zA-Z0-9'()\+,.\/:=\?;!*\#@\$_\%-] /x;
 
 if ($] < 5.006) {
     eval <<'    PERL';

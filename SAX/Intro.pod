@@ -302,6 +302,8 @@ The text data in the processing instruction. Can be an empty
 string for a processing instruction that has no data element. 
 For example E<lt>?wiggle?E<gt> is a perfectly valid processing instruction.
 
+=back
+
 =head1 Tip of the iceberg
 
 What we have discussed above is really the tip of the SAX iceberg. And
@@ -400,6 +402,6 @@ issues up.
 
 Matt Sergeant, matt@sergeant.org
 
-$Id: Intro.pod,v 1.1 2002/01/29 22:07:41 matt Exp $
+$Id: Intro.pod,v 1.2 2002/02/10 15:35:08 matt Exp $
 
 =cut

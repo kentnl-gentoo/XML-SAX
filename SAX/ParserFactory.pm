@@ -1,11 +1,11 @@
-# $Id: ParserFactory.pm,v 1.9 2002/01/28 19:35:27 matt Exp $
+# $Id: ParserFactory.pm,v 1.11 2002/02/14 16:53:38 matt Exp $
 
 package XML::SAX::ParserFactory;
 
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 use Symbol qw(gensym);
 use XML::SAX;
@@ -28,12 +28,9 @@ sub parser {
     my $parser_class = $self->_parser_class();
 
     {
-        my $parser_file = $parser_class;
-        $parser_file =~ s/::/\//g;
-        $parser_file .= ".pm";
         no strict 'refs';
         if (!keys %{"${parser_class}::"}) {
-            require $parser_file;
+            eval "use $parser_class;";
         }
     }
 
