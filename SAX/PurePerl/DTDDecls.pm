@@ -1,9 +1,9 @@
-# $Id: DTDDecls.pm,v 1.2 2001/11/14 11:07:25 matt Exp $
+# $Id: DTDDecls.pm,v 1.4 2002/01/29 21:00:26 matt Exp $
 
 package XML::SAX::PurePerl;
 
 use strict;
-use XML::SAX::PurePerl::Productions qw($NameChar);
+use XML::SAX::PurePerl::Productions qw($NameChar $SingleChar);
 
 sub elementdecl {
     my ($self, $reader) = @_;
@@ -476,22 +476,24 @@ sub EntityValue {
             # if it's a char ref, expand now:
             if ($reader->match('#')) {
                 my $char;
+                my $ref;
                 if ($reader->match('x')) {
                     $reader->consume(qr/[0-9a-fA-F]/) ||
                         $self->parser_error("Hex character reference contains illegal characters", $reader);
-                    my $hexref = $reader->consumed;
-                    $char = chr(hex($hexref));
+                    $ref = $reader->consumed;
+                    $char = chr_ref(hex($ref));
+                    $ref = "x$ref";
                 }
                 else {
                     $reader->consume(qr/[0-9]/) ||
                         $self->parser_error("Decimal character reference contains illegal characters", $reader);
-                    my $decref = $reader->consumed;
-                    $char = chr($decref);
+                    $ref = $reader->consumed;
+                    $char = chr($ref);
                 }
                 $reader->match(';') ||
                     $self->parser_error("No semi-colon found after character reference", $reader);
-                if ($char !~ /^$Char$/) { # match a single character
-                    $self->parser_error("Character reference refers to an illegal XML character", $reader);
+                if ($char !~ $SingleChar) { # match a single character
+                    $self->parser_error("Character reference '&#$ref;' refers to an illegal XML character ($char)", $reader);
                 }
                 $value .= $char;
             }

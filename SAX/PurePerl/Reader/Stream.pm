@@ -1,4 +1,4 @@
-# $Id: Stream.pm,v 1.2 2001/11/12 14:15:13 matt Exp $
+# $Id: Stream.pm,v 1.3 2002/01/29 21:45:13 matt Exp $
 
 package XML::SAX::PurePerl::Reader::Stream;
 
@@ -33,7 +33,7 @@ sub next {
     
     my $buff = "\0";
     my $bytesread = read($self->{fh}, $buff, 1); # read 1 "byte" or character?
-#    warn("read $bytesread: $buff == ", sprintf("0x%x", ord($buff)), "\n");
+    # warn("read $bytesread: $buff == ", sprintf("0x%x", ord($buff)), "\n");
     if (defined($bytesread)) {
         if ($bytesread) {
             if ($buff eq "\n") {

@@ -1,4 +1,4 @@
-# $Id: Reader.pm,v 1.2 2001/11/14 11:07:25 matt Exp $
+# $Id: Reader.pm,v 1.6 2002/01/29 21:44:56 matt Exp $
 
 package XML::SAX::PurePerl::Reader;
 
@@ -6,7 +6,7 @@ use strict;
 use XML::SAX::PurePerl::Reader::Stream;
 use XML::SAX::PurePerl::Reader::String;
 use XML::SAX::PurePerl::Reader::URI;
-use XML::SAX::PurePerl::Productions qw( $Char );
+use XML::SAX::PurePerl::Productions qw( $SingleChar );
 
 sub new {
     my $class = shift;
@@ -45,17 +45,74 @@ sub init {
     my $self = shift;
     $self->{line} = 1;
     $self->{column} = 1;
-    $self->next;
+    $self->nextchar;
     return $self;
+}
+
+sub nextchar {
+    my $self = shift;
+    $self->next;
+    my $n = ord($self->{current});
+    # warn(sprintf("ch: 0x%x ($self->{current})\n", $n));
+    if (($] < 5.007002) && ($n > 0x7F)) {
+        # utf8 surrogate
+        my $current = $self->{current};
+        if    ($n >= 0xFC) {
+            # read 5 chars
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+        }
+        elsif ($n >= 0xF8) {
+            # read 4 chars
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+        }
+        elsif ($n >= 0xF0) {
+            # read 3 chars
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+        }
+        elsif ($n >= 0xE0) {
+            # read 2 chars
+            $self->next; $current .= $self->{current};
+            $self->next; $current .= $self->{current};
+        }
+        elsif ($n >= 0xC0) {
+            # read 1 char
+            $self->next; $current .= $self->{current};
+        }
+        else {
+            throw XML::SAX::Exception::Parse(
+                Message => sprintf("Invalid character 0x%x", $n),
+                ColumnNumber => $self->column,
+                LineNumber => $self->line,
+                PublicId => $self->public_id,
+                SystemId => $self->system_id,
+            );
+        }
+        if ($] >= 5.006001) {
+            $self->{current} = pack("U0A*", $current);
+        }
+        else {
+            $self->{current} = $current;
+        }
+        # warn("read extra. current now: $current\n");
+    }
 }
 
 sub match {
     my $self = shift;
     if ($self->match_nocheck(@_)) {
-        if ($self->{matched} =~ $Char) {
+        if ($self->{matched} =~ $SingleChar) {
             return 1;
         }
-        throw XML::SAX::PurePerl::Exception ( Message => "Not a valid XML character: '$self->{matched}'", reader => $self );
+        throw XML::SAX::Exception ( Message => "Not a valid XML character: '&#x".sprintf("%X", ord($self->{matched})).";'", reader => $self );
     }
     return 0;
 }
@@ -88,7 +145,8 @@ sub match_nocheck {
     my $self = shift;
     
     if ($self->match_nonext(@_)) {
-        $self->next;
+        $self->nextchar;
+
         return 1;
     }
     return 0;
@@ -142,8 +200,12 @@ sub buffer {
     my $self = shift;
     # warn("buffering: '$_[0]' + '$self->{current}' + '$self->{buffer}'\n");
     local $^W;
-    $self->{buffer} = $_[0] . $self->{current} . $self->{buffer};
-    $self->next;
+    my $current = $self->{current};
+    if ($] >= 5.006) {
+        $current = pack("C0A*", $current);
+    }
+    $self->{buffer} = $_[0] . $current . $self->{buffer};
+    $self->nextchar;
 }
 
 sub eof {

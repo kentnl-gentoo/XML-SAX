@@ -1,4 +1,4 @@
-# $Id: Productions.pm,v 1.2 2001/11/14 11:07:25 matt Exp $
+# $Id: Productions.pm,v 1.8 2002/01/29 21:52:54 matt Exp $
 
 package XML::SAX::PurePerl::Productions;
 
@@ -6,7 +6,7 @@ use Exporter;
 @ISA = ('Exporter');
 @EXPORT_OK = qw($S $Char $VersionNum $BaseChar $Letter $Ideographic
     $Extender $Digit $CombiningChar $EncNameStart $EncNameEnd $NameChar $CharMinusDash
-    $PubidChar $Any);
+    $PubidChar $Any $SingleChar);
 
 ### WARNING!!! All productions here must *only* match a *single* character!!! ###
 
@@ -24,9 +24,12 @@ $EncNameEnd = qr/ [A-Za-z0-9\._-] /x;
 
 $PubidChar = qr/ \x20 | \x0D | \x0A | [a-zA-Z0-9] | [\'()\+,.\/:=\?;!*\#@\$_\%] /x;
 
-if ($] < 5.007002) {
+if ($] < 5.006) {
     eval <<'    PERL';
-    $Char = qr/ \x09 | \x0A | \x0D | [\x20-\xFF] /x;
+    $Char = qr/ \x09 | \x0A | \x0D | [\x20-\x7F] | ([\xC0-\xFD][\x80-\xBF]+) /x;
+
+    $SingleChar = qr/^$Char$/;
+
     $BaseChar = qr/
             [\x41-\x5A] | [\x61-\x7A] | [\xC0-\xD6] | [\xD8-\xF6] |
             [\xF8-\xFF] /x;
@@ -42,14 +45,20 @@ if ($] < 5.007002) {
     
     $NameChar = qr/ $Letter | $Digit | [._:-] | $Extender /x;
     PERL
+    die $@ if $@;
 }
 else {
     eval <<'    PERL';
+    
+    use utf8; # for 5.6
+ 
     $Char = qr/ \x09 | \x0A | \x0D |
             [\x{0020}-\x{D7FF}] | 
             [\x{E000}-\x{FFFD}] |
             [\x{10000}-\x{10FFFF}]
             /x;
+
+    $SingleChar = qr/^$Char$/;
 
     $BaseChar = qr/
 [\x{0041}-\x{005A}] | [\x{0061}-\x{007A}] | [\x{00C0}-\x{00D6}] | [\x{00D8}-\x{00F6}] |
@@ -140,6 +149,8 @@ else {
 
     $NameChar = qr/ $Letter | $Digit | [._:-] | $CombiningChar | $Extender /x;
     PERL
+
+    die $@ if $@;
 }
 
 }
