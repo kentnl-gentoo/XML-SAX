@@ -1,11 +1,11 @@
-# $Id: SAX.pm,v 1.22 2002/02/14 16:49:24 matt Exp $
+# $Id: SAX.pm,v 1.23 2002/09/03 19:25:47 matt Exp $
 
 package XML::SAX;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use Exporter ();
 @ISA = ('Exporter');

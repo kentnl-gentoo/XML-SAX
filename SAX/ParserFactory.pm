@@ -1,4 +1,4 @@
-# $Id: ParserFactory.pm,v 1.11 2002/02/14 16:53:38 matt Exp $
+# $Id: ParserFactory.pm,v 1.12 2002/02/15 19:15:57 matt Exp $
 
 package XML::SAX::ParserFactory;
 
@@ -27,10 +27,15 @@ sub parser {
     
     my $parser_class = $self->_parser_class();
 
+    my $version = '';
+    if ($parser_class =~ s/\s*\(([\d\.]+)\)\s*$//) {
+        $version = " $1";
+    }
+
     {
         no strict 'refs';
         if (!keys %{"${parser_class}::"}) {
-            eval "use $parser_class;";
+            eval "use $parser_class $version;";
         }
     }
 

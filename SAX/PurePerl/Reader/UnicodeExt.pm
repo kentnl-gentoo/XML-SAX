@@ -1,4 +1,4 @@
-# $Id: UnicodeExt.pm,v 1.2 2002/02/03 12:25:45 matt Exp $
+# $Id: UnicodeExt.pm,v 1.3 2002/09/03 19:30:36 matt Exp $
 
 package XML::SAX::PurePerl::Reader;
 use strict;
@@ -8,7 +8,7 @@ use Encode;
 
 sub set_raw_stream {
     my ($fh) = @_;
-    binmode($fh, ":raw");
+    binmode($fh, ":bytes");
 }
 
 sub switch_encoding_stream {
