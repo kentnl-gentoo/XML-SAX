@@ -1,4 +1,4 @@
-# $Id: EncodingDetect.pm,v 1.1 2001/11/11 18:41:49 matt Exp $
+# $Id: EncodingDetect.pm,v 1.3 2002/02/03 12:25:42 matt Exp $
 
 package XML::SAX::PurePerl; # NB, not ::EncodingDetect!
 
@@ -84,12 +84,8 @@ sub encoding_detect {
             }
             else {
                 my $byte1 = $reader->current;
-                my $byte2 = $reader->next;
-                my $bytes = $byte1.$byte2;
-                my $char;
-                if ($] >= 5.007002) {
-                    $char = Encode::decode("UTF-16LE", $bytes);
-                }
+                $reader->next;
+                my $char = chr unpack("v", $byte1 . $reader->current);
                 $reader->set_encoding("UTF-16LE");
                 $reader->next;
                 $reader->buffer($char);
@@ -185,17 +181,6 @@ sub encoding_detect {
     return;
     
     # $parser->parser_error($error, $reader);
-}
-
-if ($] >= 5.007002) {
-    eval <<'PERL';
-use Encode;
-
-Encode::define_alias( "UTF-16" => "UCS-2" );
-Encode::define_alias( "UTF-16BE" => "UCS-2" );
-Encode::define_alias( "UTF-16LE" => "ucs-2le" );
-Encode::define_alias( "UTF16LE" => "ucs-2le" );
-PERL
 }
 
 1;
