@@ -1,4 +1,4 @@
-# $Id: XMLDecl.pm,v 1.1 2001/11/11 18:41:49 matt Exp $
+# $Id: XMLDecl.pm,v 1.2 2002/01/21 21:23:55 matt Exp $
 
 package XML::SAX::PurePerl;
 
@@ -33,6 +33,7 @@ sub XMLDecl {
         
         $reader->match_string('?>') || $self->parser_error("Syntax error in XML declaration", $reader);
         # TODO: Call SAX event (xml_decl?)
+        # actually, sax has no xml_decl event.
     }
     else {
         # no xml decl

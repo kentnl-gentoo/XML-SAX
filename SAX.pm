@@ -1,11 +1,11 @@
-# $Id: SAX.pm,v 1.14 2001/11/19 14:29:08 matt Exp $
+# $Id: SAX.pm,v 1.15 2002/01/21 16:28:58 matt Exp $
 
 package XML::SAX;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 require Exporter;
 @ISA = ('Exporter');
@@ -110,6 +110,19 @@ sub parsers {
     return $known_parsers;
 }
 
+sub remove_parser {
+    my $class = shift;
+    my ($parser_module) = @_;
+
+    if (!$known_parsers) {
+        $class->load_parsers();
+    }
+    
+    @$known_parsers = grep { $_->{Name} ne $parser_module } @$known_parsers;
+
+    return $class;
+}
+ 
 sub add_parser {
     my $class = shift;
     my ($parser_module) = @_;
