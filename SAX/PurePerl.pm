@@ -1,4 +1,4 @@
-# $Id: PurePerl.pm,v 1.9 2002/01/29 21:44:54 matt Exp $
+# $Id: PurePerl.pm,v 1.11 2002/01/30 12:45:36 matt Exp $
 
 package XML::SAX::PurePerl;
 
@@ -150,7 +150,7 @@ sub element {
     if ($reader->match('<')) {
         my $name = $self->Name($reader) ||
                 $self->parser_error("Invalid element name", $reader);
-        
+
         my %attribs;
         
         while( my ($k, $v) = $self->Attribute($reader) ) {
@@ -350,7 +350,8 @@ sub Misc {
 sub chr_ref {
     my $n = shift;
     if ($] >= 5.006) { # unicode available
-        return pack("U", $n);
+        # return pack("U", $n);
+        return chr($n);
     }
     if ($n < 0x80) {
         return chr ($n);
