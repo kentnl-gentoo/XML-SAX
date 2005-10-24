@@ -1,4 +1,4 @@
-# $Id: Productions.pm,v 1.10 2002/02/14 16:29:34 matt Exp $
+# $Id: Productions.pm,v 1.11 2003/07/30 13:39:22 matt Exp $
 
 package XML::SAX::PurePerl::Productions;
 
@@ -11,7 +11,7 @@ use Exporter;
 ### WARNING!!! All productions here must *only* match a *single* character!!! ###
 
 BEGIN {
-$S = qr/^[\x20\x09\x0D\x0A]$/;
+$S = qr/[\x20\x09\x0D\x0A]/;
 
 $CharMinusDash = qr/[^-]/x;
 
