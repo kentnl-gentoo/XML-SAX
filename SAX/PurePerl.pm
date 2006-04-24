@@ -1,4 +1,4 @@
-# $Id: PurePerl.pm,v 1.19 2005/10/24 19:22:12 matt Exp $
+# $Id: PurePerl.pm,v 1.20 2006/04/23 23:20:09 matt Exp $
 
 package XML::SAX::PurePerl;
 
@@ -315,7 +315,7 @@ sub CDSect {
         
         if ($data =~ /^(.*?)\]\]>/s) {
             my $chars = $1;
-            $reader->move_along(length($chars) + 2);
+            $reader->move_along(length($chars) + 3);
             $self->characters({Data => $chars});
             last;
         }

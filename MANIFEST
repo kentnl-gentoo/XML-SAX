@@ -58,6 +58,7 @@ testfiles/06c.xml
 testfiles/06d.xml
 testfiles/06e.xml
 testfiles/06f.xml
+testfiles/06g.xml
 testfiles/iso8859_1.xml
 testfiles/iso8859_2.xml
 testfiles/koi8_r.xml
@@ -76,5 +77,4 @@ t/16large.t
 t/20factory.t
 t/21saxini.t
 t/99cleanup.t
-
 META.yml                                 Module meta-data (added by MakeMaker)

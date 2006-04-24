@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.11 2005/10/24 19:27:09 matt Exp $
+# $Id: Makefile.PL,v 1.14 2006/04/24 00:13:17 matt Exp $
 
 use strict;
 
@@ -117,7 +117,11 @@ sub $ev {
         }
             EOCANBLOCK
             $aload_string .= <<"            EOALOADBLOCK";
-        elsif (defined \$callbacks->{'$h'} and \$callbacks->{'$h'}->can('AUTOLOAD') ) {
+        elsif (defined \$callbacks->{'$h'} 
+        	and \$callbacks->{'$h'}->can('AUTOLOAD')
+        	# and \$callbacks->{'$h'}->can('AUTOLOAD') ne UNIVERSAL->can('AUTOLOAD')
+        	)
+        {
             my \$res = eval { \$callbacks->{'$h'}->$ev(\@_) };
             if (\$@) {
                 die \$@;
@@ -394,6 +398,7 @@ sub set_handler {
     $handler_type ||= 'Handler';
     $self->{Methods} = {} if $self->{Methods};
     $self->{$handler_type} = $new_handler;
+    $self->{ParseOptions}->{$handler_type} = $new_handler;
     return 1;
 }
 
@@ -753,7 +758,7 @@ L<XML::SAX>
 
 FOOTER
 
-    open(BASE, ">" . File::Spec->catdir("lib", "XML", "SAX", "Base.pm")) || die "Cannot write Base.pm: $!";
+    open(BASE, ">" . File::Spec->catfile("lib", "XML", "SAX", "Base.pm")) || die "Cannot write Base.pm: $!";
     print BASE $code;
     close BASE;
 }
