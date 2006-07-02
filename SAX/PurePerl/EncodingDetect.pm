@@ -93,7 +93,7 @@ sub encoding_detect {
         return;
     }
     
-    warn("Unable to recognise encoding of this document");
+    #warn("Unable to recognise encoding of this document");
     return;
 }
 
