@@ -1,11 +1,11 @@
-# $Id: PurePerl.pm,v 1.20 2006/04/23 23:20:09 matt Exp $
+# $Id: PurePerl.pm,v 1.21 2007/02/07 09:33:50 grant Exp $
 
 package XML::SAX::PurePerl;
 
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.90';
+$VERSION = '0.91';
 
 use XML::SAX::PurePerl::Productions qw($Any $CharMinusDash $SingleChar);
 use XML::SAX::PurePerl::Reader;
@@ -566,7 +566,8 @@ sub AttValue {
             unless length($data);
         if ($data =~ /^([^$quote]*)$quote/) {
             $reader->move_along(length($1) + 1);
-            return $value . $1;
+            $value .= $1;
+            last;
         }
         else {
             $value .= $data;

@@ -48,7 +48,7 @@ sub new {
             return XML::SAX::PurePerl::Reader::Stream->new($fh);
         }
         else {
-            die "LWP Request Failed : " . $res->status_line;
+            die "LWP Request Failed";
         }
     }
 }

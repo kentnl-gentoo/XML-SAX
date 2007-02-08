@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.14 2006/04/24 00:13:17 matt Exp $
+# $Id: Makefile.PL,v 1.15 2007/02/07 09:33:50 grant Exp $
 
 use strict;
 
@@ -119,7 +119,7 @@ sub $ev {
             $aload_string .= <<"            EOALOADBLOCK";
         elsif (defined \$callbacks->{'$h'} 
         	and \$callbacks->{'$h'}->can('AUTOLOAD')
-        	# and \$callbacks->{'$h'}->can('AUTOLOAD') ne UNIVERSAL->can('AUTOLOAD')
+        	and \$callbacks->{'$h'}->can('AUTOLOAD') ne (UNIVERSAL->can('AUTOLOAD') || '')
         	)
         {
             my \$res = eval { \$callbacks->{'$h'}->$ev(\@_) };
