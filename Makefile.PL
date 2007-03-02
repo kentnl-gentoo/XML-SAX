@@ -37,7 +37,7 @@ sub MY::install {
         }
     }
     
-    if ($write_ini_ok) {
+    if (0 && $write_ini_ok) {
         $script =~ s/install :: (.*)$/install :: $1 install_sax_pureperl/m;
         $script .= <<"INSTALL";
 
