@@ -1,13 +1,13 @@
-# $Id: PurePerl.pm,v 1.23 2007/06/27 09:08:00 grant Exp $
+# $Id: PurePerl.pm,v 1.27 2008-08-04 21:12:28 grant Exp $
 
 package XML::SAX::PurePerl;
 
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.92';
+$VERSION = '0.95';
 
-use XML::SAX::PurePerl::Productions qw($Any $CharMinusDash $SingleChar);
+use XML::SAX::PurePerl::Productions qw($NameChar $SingleChar);
 use XML::SAX::PurePerl::Reader;
 use XML::SAX::PurePerl::EncodingDetect ();
 use XML::SAX::Exception;
@@ -374,6 +374,11 @@ sub Reference {
     return 0 unless $reader->match('&');
     
     my $data = $reader->data;
+
+    # Fetch more data if we have an incomplete numeric reference
+    if ($data =~ /^(#\d*|#x[0-9a-fA-F]*)$/) {
+        $data = $reader->data(length($data) + 6);
+    }
     
     if ($data =~ /^#x([0-9a-fA-F]+);/) {
         my $ref = $1;
@@ -580,7 +585,7 @@ sub AttValue {
     }
     
     $value =~ s/[\x09\x0A\x0D]/\x20/g;
-    $value =~ s/&(#(x[0-9a-fA-F]+)|([0-9]+)|\w+);/$self->AttReference($1, $reader)/geo;
+    $value =~ s/&(#(x[0-9a-fA-F]+)|#([0-9]+)|\w+);/$self->AttReference($1, $reader)/geo;
     
     return $value;
 }
@@ -663,7 +668,7 @@ sub Name {
     while(1) {
         my $data = $reader->data;
         return unless length($data);
-        $data =~ /^([^\s>\/&\?;=<\)\(\[\],\%\#\!\*]*)/ or return;
+        $data =~ /^([^\s>\/&\?;=<\)\(\[\],\%\#\!\*\|]*)/ or return;
         $name .= $1;
         my $len = length($1);
         $reader->move_along($len);
@@ -672,7 +677,7 @@ sub Name {
     
     return unless length($name);
     
-    $name =~ /$NameChar/o or $self->parser_error("Name <$name> does not match NameChar production", $reader);
+    $name =~ /^$NameChar+$/o or $self->parser_error("Name <$name> does not match NameChar production", $reader);
 
     return $name;
 }
