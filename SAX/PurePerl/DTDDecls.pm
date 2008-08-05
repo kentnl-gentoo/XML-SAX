@@ -1,9 +1,9 @@
-# $Id: DTDDecls.pm,v 1.8 2008-08-04 10:39:11 grant Exp $
+# $Id: DTDDecls.pm,v 1.9 2008-08-05 12:37:13 grant Exp $
 
 package XML::SAX::PurePerl;
 
 use strict;
-use XML::SAX::PurePerl::Productions qw($NameChar $SingleChar);
+use XML::SAX::PurePerl::Productions qw($SingleChar);
 
 sub elementdecl {
     my ($self, $reader) = @_;

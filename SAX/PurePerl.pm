@@ -1,11 +1,11 @@
-# $Id: PurePerl.pm,v 1.27 2008-08-04 21:12:28 grant Exp $
+# $Id: PurePerl.pm,v 1.28 2008-08-05 12:36:51 grant Exp $
 
 package XML::SAX::PurePerl;
 
 use strict;
 use vars qw/$VERSION/;
 
-$VERSION = '0.95';
+$VERSION = '0.96';
 
 use XML::SAX::PurePerl::Productions qw($NameChar $SingleChar);
 use XML::SAX::PurePerl::Reader;
@@ -677,7 +677,7 @@ sub Name {
     
     return unless length($name);
     
-    $name =~ /^$NameChar+$/o or $self->parser_error("Name <$name> does not match NameChar production", $reader);
+    $name =~ /$NameChar/o or $self->parser_error("Name <$name> does not match NameChar production", $reader);
 
     return $name;
 }

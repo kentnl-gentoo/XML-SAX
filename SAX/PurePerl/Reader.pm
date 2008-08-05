@@ -1,10 +1,9 @@
-# $Id: Reader.pm,v 1.12 2008-08-04 10:04:54 grant Exp $
+# $Id: Reader.pm,v 1.13 2008-08-05 12:37:13 grant Exp $
 
 package XML::SAX::PurePerl::Reader;
 
 use strict;
 use XML::SAX::PurePerl::Reader::URI;
-use XML::SAX::PurePerl::Productions qw( $SingleChar $NameChar );
 use Exporter ();
 
 use vars qw(@ISA @EXPORT_OK);
